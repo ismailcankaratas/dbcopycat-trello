@@ -20,9 +20,9 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             async authorize(credentials) {
-                const user = await dbcopycat.getById('users', x => x.email == credentials.email);
+                const user = await dbcopycat.find('users', x => x.email == credentials.email);
 
-                // const validPassword = bcrypt.compareSync(credentials.password, credentials.password);
+                // const validPassword = bcrypt.compareSync(credentials.password, user.password);
 
                 if (user && bcrypt.compareSync(credentials.password, user.password)) {
                     return {

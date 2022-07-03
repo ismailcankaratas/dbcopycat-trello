@@ -2,33 +2,52 @@ import { LockClosedIcon } from '@heroicons/react/solid'
 import axios from 'axios';
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { toast } from 'react-toastify';
-import Layout from '../components/Layout';
 import { getError } from '../utils/helpers';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function RegisterScreen() {
   const { handleSubmit, register, getValues, formState: { errors }, } = useForm();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const { redirect } = router.query;
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || '/');
+    }
+  }, [router, session, redirect]);
 
   const submitHandler = async ({ name, email, password }) => {
     try {
       await axios.post('/api/auth/signup', {
-        name, email, password
-      })
+        name,
+        email,
+        password,
+      });
+
       const result = await signIn('credentials', {
         redirect: false,
         email,
-        password
-      })
+        password,
+      });
       if (result.error) {
         toast.error(result.error);
       }
     } catch (error) {
-      toast.error(getError(error))
+      return toast.error(getError(error))
     }
   }
   return (
-    <Layout title="Hesap oluştur">
+    <>
+      <Head>
+        <title>Kayıt ol | Dbcopycat </title>
+        <meta name='description' content='Dbcopycat trello clone uygulaması' />
+        <link rel="icon" type="image/x-icon" href="https://a.trellocdn.com/prgb/dist/images/ios/apple-touch-icon-144x144-precomposed.b2a61dcb04053829cdcc.png" />
+      </Head>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -143,6 +162,6 @@ export default function RegisterScreen() {
           </form>
         </div>
       </div >
-    </Layout >
+    </>
   )
 }

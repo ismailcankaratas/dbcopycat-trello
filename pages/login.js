@@ -9,6 +9,7 @@ import { getError } from '../utils/helpers';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
 export default function RegisterScreen() {
     const { data: session } = useSession();
@@ -39,7 +40,12 @@ export default function RegisterScreen() {
         }
     }
     return (
-        <Layout title="Giriş yap">
+        <>
+            <Head>
+                <title>Giriş yap | Dbcopycat </title>
+                <meta name='description' content='Dbcopycat trello clone uygulaması' />
+                <link rel="icon" type="image/x-icon" href="https://a.trellocdn.com/prgb/dist/images/ios/apple-touch-icon-144x144-precomposed.b2a61dcb04053829cdcc.png" />
+            </Head>
             <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full space-y-8">
                     <div>
@@ -128,12 +134,12 @@ export default function RegisterScreen() {
                                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                     <LockClosedIcon className="h-5 w-5 text-blue-500 group-hover:text-blue-400" aria-hidden="true" />
                                 </span>
-                                Sign in
+                                Giriş yap
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-        </Layout>
+        </>
     )
 }

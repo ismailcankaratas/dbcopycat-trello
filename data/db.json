@@ -1,1 +1,18 @@
-{}
+{
+    "users": [
+        {
+            "id": "6c2d705d-d031-442c-94b5-ebcdb0debdf2",
+            "name": "İsmail Can Karataş",
+            "email": "ismailcankaratasss@gmail.com",
+            "password": "$2a$10$Wm.CtGLv7wfKqSHeUfbQzupZAB4O7U4wgTjLjGplLBR/dHfeOb4Bi",
+            "isAdmin": false
+        },
+        {
+            "id": "6a825875-66b2-41df-9030-db850877a8ff",
+            "name": "admin",
+            "email": "admin@example.com",
+            "password": "$2a$10$loyaNcBb/eemHSc5yB3uA.4ud2m8b5vc1Yz.k6.2S6tZtxrKPUxQS",
+            "isAdmin": false
+        }
+    ]
+}

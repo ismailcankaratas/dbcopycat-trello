@@ -24,7 +24,7 @@ const Sidebar = () => {
     <>
       {/* Sidebar starts */}
       {/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
-      <div className="w-64 absolute sm:relative dark:bg-gray-800 shadow md:h-full flex-col justify-between hidden sm:flex">
+      <div className="w-64 absolute sm:relative z-50 dark:bg-gray-800 shadow md:h-full flex-col justify-between hidden sm:flex">
         <div className="px-8">
           <div className="h-16 w-full flex items-center">
             <img src="https://a.trellocdn.com/prgb/dist/images/header-logo-spirit.d947df93bc055849898e.gif" alt="" />
@@ -67,7 +67,7 @@ const Sidebar = () => {
 
 
       {/* MOBİLE */}
-      <div className={`w-64 h-full z-40 absolute ${sidebar ? "" : "bg-gray-800 shadow"} md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out`} id="mobile-nav">
+      <div className={`w-64 h-full z-50 absolute ${sidebar ? "" : "bg-gray-800 shadow"} md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out`} id="mobile-nav">
         <div className={`h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer ${sidebar ? "left-0" : "right-0"}`} id="mobile-toggler" onClick={() => sidebarHandler()}>
           <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-adjustments" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="#FFFFFF" fill="none" strokeLinecap="round" strokeLinejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" />

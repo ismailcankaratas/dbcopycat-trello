@@ -9,7 +9,7 @@ export default function List({ title, tasks, listId, index }) {
     const [formOpen, setFormOpen] = useState(false);
     const [inputChange, setInputChange] = useState(null);
     return (
-        <div className="bg-[#ebecf0] rounded-sm w-72 px-2 pb-2 m-2">
+        <div className="relative bg-[#ebecf0] z-[-50] rounded-sm w-72 px-2 pb-2 m-2">
             <div >
                 <div className='flex items-center justify-between'>
                     {
@@ -26,12 +26,14 @@ export default function List({ title, tasks, listId, index }) {
                         <Menu.Button className='hover:bg-[#00000014] rounded p-2'>
                             <BiDotsHorizontalRounded />
                         </Menu.Button>
-                        <Menu.Items className="flex flex-col w-72 absolute py-2 z-50 bg-white font-normal">
+                        <Menu.Items className="flex flex-col w-72 left-0 absolute py-2 bg-white font-normal">
                             <div className='flex justify-between border-b-2 text-base py-2 mx-2'>
                                 <span className='w-full text-center'>
                                     Liste İşlemleri
                                 </span>
-                                <AiOutlineClose className='cursor-pointer' />
+                                <Menu.Button className='hover:bg-[#00000014] rounded'>
+                                    <AiOutlineClose className='cursor-pointer' />
+                                </Menu.Button>
                             </div>
                             <div className='flex flex-col mt-2'>
                                 <Menu.Item>
@@ -54,11 +56,12 @@ export default function List({ title, tasks, listId, index }) {
                     </Menu >
                 </div>
 
+                {tasks.map((task, key) => (
+                    <Task text={task.text} id={task.id} listId={listId} index={key} key={key} />
+                ))}
 
-                <Task text="Deneme" id="123" listId="1" index="1" key="123" />
 
-
-                <ActionButton />
+                <ActionButton listId={listId} />
             </div>
         </div>
     )

@@ -24,10 +24,10 @@ export const addList = (title) => (dispatch) => {
     });
 }
 
-export const getList = () => (dispatch) => {
+export const getList = (reFetch) => (dispatch) => {
     axios.get('/api/list/getList').then((result) => {
         if (result.data) {
-            dispatch(setList(result.data))
+            (result.data.length > 0 || reFetch) && dispatch(setList(result.data));
         }
     }).catch((err) => {
         console.log(err);
@@ -38,6 +38,15 @@ export const addTask = (listId, taskText) => (dispatch) => {
     axios.post('/api/list/addTask', { listId, taskText }).then((result) => {
         dispatch(getList())
         toast.success(`Kart eklendi`)
+    }).catch((err) => {
+        toast.error(getError(err))
+    });
+}
+
+export const deleteList = (listId) => (dispatch) => {
+    axios.post('/api/list/deleteList', { listId }).then((result) => {
+        dispatch(getList({ reFetch: true }))
+        toast.success(result.data);
     }).catch((err) => {
         toast.error(getError(err))
     });

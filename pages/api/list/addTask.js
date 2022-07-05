@@ -11,7 +11,6 @@ const handler = async (req, res) => {
     if (userList.userId != session.user.id) {
         return res.status(500).send({ message: "List kullanıcıya ait değil" })
     }
-    console.log(userList);
 
     userList.tasks.push({
         id: uid4(),

@@ -37,13 +37,7 @@ export default function Task({ text, id, index, listId }) {
         return setFormOpen(false)
     }
 
-    async function renderForm() {
-        let currentList;
-        let currentTaskText;
-        await axios.get('/api/list/getList').then(lists => {
-            currentList = lists.data.find(list => list.id == listId);
-            currentTaskText = currentList.tasks.find(task => task.id == id).text;
-        });
+    function renderForm() {
         return (
             <TextArea
                 placeholder={"Bu kart için başlık girin..."}
@@ -51,7 +45,7 @@ export default function Task({ text, id, index, listId }) {
                 onBlur={() => handleEditTask(listId, id, inputChange)}
                 onChange={(e) => setInputChange(e.target.value)}
                 className="min-h-[5rem] w-full p-2 rounded resize-none outline-none border-none"
-                defaultValue={currentTaskText}
+                defaultValue={text}
             />
         )
     }
@@ -66,7 +60,7 @@ export default function Task({ text, id, index, listId }) {
                 </div>
                 <div
                     onClick={() => setFormOpen(true)}
-                    className='hover:bg-[#00000014] cursor-pointer rounded p-2 taskEdit opacity-0 transition duration-150 ease-in-out'>
+                    className='hover:bg-[#00000014] cursor-pointer rounded p-2 taskEdit transition duration-150 ease-in-out'>
                     <BsPencil className='w-3 h-3' />
                 </div>
             </div>

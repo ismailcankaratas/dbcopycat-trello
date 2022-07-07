@@ -20,10 +20,10 @@ export default function index() {
   return (
     <Layout title="Trello Clone">
       <div
-        className="flex z-0 w-full justify-evenly flex-wrap rounded border-dashed border-2 border-gray-300 md:ml-36">
+        className="flex items-start z-0 w-full justify-evenly flex-wrap rounded border-dashed border-2 border-gray-300 md:ml-36">
         {lists.length > 0 ?
           lists.map((list, key) => (
-            <List title={list.title} tasks={list.tasks} listId={list.id} key={key} index={key} />
+            <List title={list.title} tasks={list.tasks} listId={list.id} key={list.id} index={key} />
           ))
           : ""
         }

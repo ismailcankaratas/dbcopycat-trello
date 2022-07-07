@@ -1,23 +1,50 @@
 import React, { useState } from 'react'
 import { Menu } from '@headlessui/react'
-import { AiOutlineClose } from 'react-icons/ai'
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import Task from './Task';
 import ActionButton from './ActionButton';
-import { deleteList } from '../utils/features/listSlice';
+import { deleteList, updateList } from '../utils/features/listSlice';
 import { useDispatch } from 'react-redux'
+import ListDropdawn from './dropdawns/ListDropdawn';
+import axios from 'axios';
 
 export default function List({ title, tasks, listId, index }) {
     const [formOpen, setFormOpen] = useState(false);
     const [inputChange, setInputChange] = useState(null);
     const dispatch = useDispatch();
 
+    async function handleEditTitle(listId, text) {
+        let currentList;
+        await axios.get('/api/list/getList').then(lists => {
+            currentList = lists.data.find(list => list.id == listId);
+        });
+        if (!text) {
+            return setFormOpen(false)
+        }
+        currentList.title = text;
+        dispatch(updateList(currentList))
+        return setFormOpen(false)
+    }
+    function renderForm(title) {
+        return (
+            <input
+                type="text"
+                placeholder="Liste başlığı girin..."
+                autoFocus
+                onBlur={() => handleEditTitle(listId, inputChange)}
+                onChange={(e) => setInputChange(e.target.value)}
+                className=" w-72 m-2 mt-3 ml-0 p-1 py-0 rounded resize-none outline-none border-2 border-[#0079bf]"
+                defaultValue={title}
+            />
+        )
+    }
+
     return (
         <div className="bg-[#ebecf0] rounded-sm w-72 px-2 pb-2 m-2">
             <div className='relative'>
                 <div className='flex items-center justify-between'>
                     {
-                        formOpen ? renderForm(listId)
+                        formOpen ? renderForm(title)
                             :
                             <h2
                                 onClick={() => setFormOpen(true)}
@@ -25,40 +52,13 @@ export default function List({ title, tasks, listId, index }) {
                                 {title}
                             </h2>
                     }
-
-                    <Menu as="div">
-                        <Menu.Button className='hover:bg-[#00000014] rounded p-2 cursor-pointer'>
-                            <BiDotsHorizontalRounded />
-                        </Menu.Button>
-                        <Menu.Items className="flex left-0 flex-col w-72 absolute py-2 bg-white font-normal">
-                            <div className='flex justify-between border-b-2 text-base py-2 mx-2'>
-                                <span className='w-full text-center'>
-                                    Liste İşlemleri
-                                </span>
-                            </div>
-                            <div className='flex flex-col mt-2'>
-                                <Menu.Item>
-                                    {({ active }) => (
-                                        <span
-                                            className={`p-1 cursor-pointer text-[#5e6c84] ${active && ' bg-[#091e4214] text-[#172b4d] '}`}
-                                            onClick={() => dispatch(deleteList(listId))}
-                                        >
-                                            Sil
-                                        </span>
-                                    )
-                                    }
-                                </Menu.Item >
-                            </div >
-
-                            {/* <Menu.Item disabled>
-                            <span className="opacity-75">Bir arkadaşınızı davet edin (çok yakında!)</span>
-                        </Menu.Item> */}
-                        </Menu.Items >
-                    </Menu >
+                    <ListDropdawn listId={listId} />
                 </div>
 
                 {tasks.map((task, key) => (
-                    <Task text={task.text} id={task.id} listId={listId} index={key} key={key} />
+                    <>
+                        <Task text={task.text} id={task.id} listId={listId} index={key} key={key} />
+                    </>
                 ))}
 
 

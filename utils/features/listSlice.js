@@ -52,6 +52,14 @@ export const deleteList = (listId) => (dispatch) => {
     });
 }
 
+export const updateList = (list) => (dispatch) => {
+    axios.post('/api/list/updateList', { list }).then((result) => {
+        dispatch(getList())
+        toast.success(`Liste güncellendi.`);
+    }).catch((err) => {
+        toast.error(getError(err))
+    });
+}
 
 export const { setList } = listSlice.actions;
 

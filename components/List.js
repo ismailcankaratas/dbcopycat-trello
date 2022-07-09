@@ -7,6 +7,7 @@ import { deleteList, updateList } from '../utils/features/listSlice';
 import { useDispatch } from 'react-redux'
 import ListDropdawn from './dropdawns/ListDropdawn';
 import axios from 'axios';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 export default function List({ title, tasks, listId, index }) {
     const [formOpen, setFormOpen] = useState(false);
@@ -40,30 +41,42 @@ export default function List({ title, tasks, listId, index }) {
     }
 
     return (
-        <div className="bg-[#ebecf0] rounded-sm w-72 px-2 pb-2 m-2">
-            <div className='relative'>
-                <div className='flex items-center justify-between'>
-                    {
-                        formOpen ? renderForm(title)
-                            :
-                            <h2
-                                onClick={() => setFormOpen(true)}
-                                className='cursor-pointer font-semibold m-2 pt-2 text-[#172b4d]'>
-                                {title}
-                            </h2>
-                    }
-                    <ListDropdawn listId={listId} />
-                </div>
+        <Draggable draggableId={`${listId}`} index={index}>
+            {provided => (
+                <div {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                    className="bg-[#ebecf0] rounded-sm w-72 px-2 pb-2 m-2">
+                    <Droppable droppableId={`${listId}`}>
+                        {provided => (
+                            <div {...provided.droppableProps} ref={provided.innerRef} className='relative'>
+                                <div className='flex items-center justify-between'>
+                                    {
+                                        formOpen ? renderForm(title)
+                                            :
+                                            <h2
+                                                onClick={() => setFormOpen(true)}
+                                                className='cursor-pointer font-semibold m-2 pt-2 text-[#172b4d]'>
+                                                {title}
+                                            </h2>
+                                    }
+                                    <ListDropdawn listId={listId} />
+                                </div>
 
-                {tasks.map((task, key) => (
-                    <>
-                        <Task text={task.text} id={task.id} listId={listId} index={key} key={key} />
-                    </>
-                ))}
+                                {tasks.map((task, key) => (
+                                    <>
+                                        <Task text={task.text} id={task.id} listId={listId} index={key} key={key} />
+                                    </>
+                                ))}
 
 
-                <ActionButton listId={listId} />
-            </div>
-        </div >
+                                <ActionButton listId={listId} />
+                            </div>
+                        )}
+                    </Droppable>
+                </div >
+            )
+            }
+        </Draggable >
     )
 }

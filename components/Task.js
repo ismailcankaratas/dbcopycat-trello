@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import axios from 'axios';
 import TextArea from 'react-textarea-autosize';
 import { updateList } from '../utils/features/listSlice';
+import { Draggable } from 'react-beautiful-dnd';
 
 export default function Task({ text, id, index, listId }) {
     const [formOpen, setFormOpen] = useState(false);
@@ -51,19 +52,23 @@ export default function Task({ text, id, index, listId }) {
     }
 
     return (
-        <div >
-            <div className="flex task items-center justify-between w-sm bg-white rounded overflow-hidden shadow-lg p-2 my-2">
-                <div className="text-sm">
-                    {
-                        (formOpen) ? renderForm(id) : text
-                    }
-                </div>
+        <Draggable draggableId={`${id}`} index={index}>
+            {provided => (
                 <div
-                    onClick={() => setFormOpen(true)}
-                    className='hover:bg-[#00000014] cursor-pointer rounded p-2 taskEdit transition duration-150 ease-in-out'>
-                    <BsPencil className='w-3 h-3' />
+                    ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+                    className="flex task items-center justify-between w-sm bg-white rounded overflow-hidden shadow-lg p-2 my-2">
+                    <div className="text-sm">
+                        {
+                            (formOpen) ? renderForm(id) : text
+                        }
+                    </div>
+                    <div
+                        onClick={() => setFormOpen(true)}
+                        className='hover:bg-[#00000014] cursor-pointer rounded p-2 taskEdit transition duration-150 ease-in-out'>
+                        <BsPencil className='w-3 h-3' />
+                    </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </Draggable>
     )
 }
